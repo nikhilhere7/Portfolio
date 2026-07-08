@@ -1,0 +1,715 @@
+
+
+
+Index · HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nikhil Mahale</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+ 
+  :root{
+    --bg:#0B0E14;
+    --bg-2:#10141d;
+    --ink:#F3F1EA;
+    --ink-dim:rgba(243,241,234,0.58);
+    --ink-faint:rgba(243,241,234,0.32);
+    --amber:#E8A33D;
+    --teal:#3EB6A2;
+    --line:rgba(243,241,234,0.10);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+  ::selection{ background:var(--amber); color:#0B0E14; }
+ 
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  .serif{ font-family:'Fraunces', serif; }
+ 
+  a{ color:inherit; text-decoration:none; }
+ 
+  /* liquid glass with enhanced animations */
+  .liquid-glass {
+    background: rgba(255,255,255,0.02);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: none;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.08);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .liquid-glass::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    padding: 1.2px;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0.35) 0%,
+      rgba(255,255,255,0.10) 20%,
+      rgba(255,255,255,0) 40%,
+      rgba(255,255,255,0) 60%,
+      rgba(255,255,255,0.10) 80%,
+      rgba(255,255,255,0.35) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .liquid-glass:hover {
+    background: rgba(255,255,255,0.06);
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.3);
+  }
+  .liquid-glass:active {
+    transform: translateY(0);
+    background: rgba(255,255,255,0.04);
+  }
+ 
+  /* ---------- HEADER ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 26px 40px;
+  }
+  .wordmark{
+    font-size:17px; font-weight:600; letter-spacing:-0.01em;
+  }
+  nav.pill{
+    border-radius:999px; padding:6px; display:flex; align-items:center; gap:2px;
+  }
+  nav.pill a{
+    font-size:11px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--ink-dim); padding:8px 16px; border-radius:999px;
+    transition: color .2s ease, background .2s ease;
+  }
+  nav.pill a:hover{ color:var(--ink); background:rgba(255,255,255,0.04); }
+  
+  /* HIGHLIGHTED YELLOW RESUME BUTTON - SLIGHTLY BIGGER */
+  .resume-btn{
+    background: var(--amber) !important;
+    color: #0B0E14 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 12px 26px !important;
+    box-shadow: 0 4px 14px rgba(232, 163, 61, 0.3);
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease, filter 0.2s ease !important;
+  }
+  .resume-btn:hover{
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(232, 163, 61, 0.45);
+  }
+  .resume-btn:active{
+    transform: translateY(0);
+  }
+ 
+  @media (max-width: 860px){
+    nav.pill{ display:none; }
+    header{ padding: 20px 22px; }
+  }
+ 
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; height:100vh; width:100%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding: 0 24px;
+  }
+  #graph{ position:absolute; inset:0; z-index:0; opacity:0.85; }
+  .hero-vignette{
+    position:absolute; inset:0; z-index:1; pointer-events:none;
+    background: radial-gradient(ellipse at 50% 45%, rgba(11,14,20,0) 0%, rgba(11,14,20,0.55) 62%, rgba(11,14,20,0.96) 100%);
+  }
+ 
+  .eyebrow{
+    position:relative; z-index:2;
+    font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:var(--teal);
+    margin-bottom:22px; opacity:0; transform:translateY(10px);
+  }
+  .eyebrow::before{ content:"● "; color:var(--teal); }
+ 
+  h1.headline{
+    position:relative; z-index:2;
+    font-family:'Fraunces', serif; font-weight:400; font-style:italic;
+    font-size: clamp(38px, 6vw, 76px); line-height:1.08; letter-spacing:-0.01em;
+    opacity:0; transform:translateY(24px);
+  }
+ 
+  .hero-bottom{
+    position:absolute; bottom:64px; left:0; right:0; z-index:2;
+    display:flex; flex-direction:column; align-items:center; gap:24px;
+    opacity:0; transform:translateY(16px);
+  }
+  
+  /* HIGHLIGHTED HERO SUBTEXT CALLOUT */
+  .hero-sub{
+    max-width:720px; 
+    font-size:15.5px; 
+    line-height:1.75; 
+    color:var(--ink);
+    padding:16px 24px;
+    background: rgba(232, 163, 61, 0.05);
+    border-left: 3px solid var(--amber);
+    border-radius: 4px;
+    text-align: left;
+  }
+ 
+  .status-row{
+    display:flex; align-items:center; gap:8px;
+    font-size:11px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--ink-dim);
+  }
+  .status-row .dot{
+    width:6px; height:6px; border-radius:50%; background:var(--teal);
+    box-shadow: 0 0 8px 2px rgba(62,182,162,0.6);
+  }
+ 
+  .scroll-cue{
+    position:absolute; bottom:20px; left:50%; transform:translateX(-50%);
+    z-index:2; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .scroll-cue span {
+    font-size:10px; letter-spacing:0.2em; text-transform:uppercase; opacity:0.4;
+  }
+  .scroll-cue svg {
+    width: 14px; height: 14px; stroke: var(--ink); stroke-width: 2; fill: none; opacity: 0.5;
+    animation: bounceDown 2s infinite ease-in-out;
+  }
+ 
+  @keyframes bounceDown {
+    0%, 100% { transform: translateY(0); opacity: 0.4; }
+    50% { transform: translateY(5px); opacity: 0.9; }
+  }
+ 
+  /* ---------- SECTIONS ---------- */
+  section{ position:relative; z-index:2; padding: 130px 8vw; }
+  .section-head{ margin-bottom:56px; }
+  .section-num{ font-size:12px; color:var(--amber); letter-spacing:0.1em; margin-bottom:14px; display:block; }
+  .section-title{ font-family:'Fraunces', serif; font-weight:400; font-size: clamp(28px, 3.4vw, 44px); letter-spacing:-0.01em; }
+ 
+  /* about - ZOOMED META SECTION */
+  #about{ background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding: 150px 8vw; }
+  .about-center{ max-width:650px; margin:0 auto; }
+  .about-meta{ display:flex; flex-direction:column; gap:32px; }
+  .meta-row{ display:flex; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:22px; font-size:18px; gap:20px; align-items: baseline;}
+  .meta-row .k{ color:var(--ink-faint); font-weight: 500; }
+  
+  /* TARGETED CONTACT VALUES HIGHLIGHTED IN AMBER/YELLOW */
+  .meta-row .v{ font-family:'IBM Plex Mono', monospace; font-size:17px; text-align:right; font-weight: 500; color: var(--amber) !important; }
+  .meta-row .v a{ color:var(--amber) !important; transition:color .2s ease, filter .2s ease; border-bottom: 1px dashed rgba(232,163,61,0.4) !important; padding-bottom: 2px;}
+  .meta-row .v a:hover{ filter: brightness(1.2); border-bottom-color: var(--amber) !important; }
+ 
+  /* experience */
+  .timeline{ display:flex; flex-direction:column; }
+  .tl-item{
+    display:grid; grid-template-columns: 160px 1fr; gap:40px;
+    padding: 32px 0; border-top:1px solid var(--line);
+  }
+  .tl-item:last-child{ border-bottom:1px solid var(--line); }
+  .tl-date{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-faint); padding-top:4px; }
+  .tl-role{ font-size:19px; font-weight:600; margin-bottom:4px; }
+  .tl-org{ font-size:13px; color:var(--teal); letter-spacing:0.04em; margin-bottom:14px; }
+  .tl-item ul{ list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .tl-item li{ font-size:14.5px; color:var(--ink-dim); line-height:1.6; padding-left:16px; position:relative; }
+  .tl-item li::before{ content:"—"; position:absolute; left:0; color:var(--ink-faint); }
+  @media (max-width:700px){ .tl-item{ grid-template-columns:1fr; gap:8px; } }
+ 
+  /* projects */
+  #projects{ background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .proj-stack{ display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); }
+  .proj-card{
+    background:var(--bg-2); padding:44px 40px; display:grid; grid-template-columns: 1.15fr 0.85fr; gap:48px;
+    transition: background 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .proj-card:hover{ background:#131822; }
+  .proj-head-row{ display:flex; justify-content:space-between; align-items:flex-start; gap:20px; margin-bottom:18px; flex-wrap:wrap; position: relative; z-index: 5; }
+  .proj-eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--amber); }
+  
+  /* PROJECTS HOVER BUTTON BUTTON EFFECTS */
+  .proj-links{ display:flex; gap:14px; }
+  .proj-links a{ 
+    font-size:12px; 
+    font-family:'IBM Plex Mono', monospace; 
+    color:var(--bg); 
+    background: var(--teal);
+    padding: 6px 14px;
+    border-radius: 4px;
+    display:inline-flex; 
+    align-items:center; 
+    gap:6px; 
+    font-weight: 500;
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s ease, box-shadow 0.2s ease; 
+  }
+  .proj-links a:hover{ 
+    text-decoration:none; 
+    background: var(--amber);
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 12px rgba(232,163,61,0.25);
+  }
+  .proj-links a:active { transform: translateY(0); }
+ 
+  .proj-title{ font-family:'Fraunces', serif; font-size:24px; font-weight:400; letter-spacing:-0.01em; margin-bottom:6px; }
+  .proj-subtitle{ font-size:14.5px; color:var(--ink); font-weight:500; margin-bottom:16px; }
+  .proj-desc{ font-size:14.5px; color:var(--ink-dim); line-height:1.7; margin-bottom:22px; }
+  .proj-tags{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px; }
+  .proj-tag{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--ink-dim); border:1px solid var(--line); border-radius:999px; padding:5px 12px; transition: all 0.20s ease; }
+  .proj-card:hover .proj-tag { border-color: rgba(62,182,162,0.4); color: var(--ink); }
+  .proj-stat{ font-size:13px; color:var(--ink); border-left:2px solid var(--amber); padding-left:14px; line-height:1.5; }
+ 
+  .proj-visual{ display:flex; align-items:center; justify-content:center; perspective: 1000px; }
+  .proj-visual svg{ width:100%; height:auto; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
+  .proj-card:hover .proj-visual svg { transform: rotateY(-10deg) rotateX(5deg) scale(1.02); }
+  
+  /* Interactive Graph Overlays inside Visuals */
+  .interactive-bar { transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), fill 0.3s ease; }
+  .proj-card:hover .interactive-bar { fill: var(--amber) !important; }
+  .proj-card:hover .interactive-bar.alt { fill: var(--teal) !important; }
+  
+  .interactive-circle { transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+  .proj-card:hover .interactive-circle { stroke-dashoffset: 51.52 !important; }
+ 
+  @media (max-width:900px){ .proj-card{ grid-template-columns:1fr; } }
+ 
+  /* skills */
+  .skills-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:40px; }
+  .skill-group{ padding: 12px; border-radius: 8px; transition: background 0.3s ease; }
+  .skill-group:hover { background: rgba(255,255,255,0.02); }
+  .skill-group .skill-cat{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--amber); margin-bottom:16px; transition: color 0.3s ease; }
+  .skill-group:hover .skill-cat { color: var(--teal); }
+  .skill-group .skill-list{ display:flex; flex-direction:column; gap:10px; }
+  .skill-group .skill-list span{ font-size:14.5px; color:var(--ink-dim); transition: color 0.2s ease, transform 0.2s ease; display: inline-block; transform-origin: left; }
+  .skill-group:hover .skill-list span { color: var(--ink); }
+  .skill-group .skill-list span:hover { transform: translateX(4px) scale(1.04); color: var(--amber); }
+  @media (max-width:860px){ .skills-grid{ grid-template-columns:repeat(2,1fr); gap:34px 24px; } }
+ 
+  /* certifications */
+  #certs{ background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .cert-list{ display:flex; flex-direction:column; }
+  .cert-item{ display:flex; justify-content:space-between; align-items:baseline; padding:20px 0; border-top:1px solid var(--line); gap:24px; flex-wrap:wrap; }
+  .cert-list .cert-item:last-child{ border-bottom:1px solid var(--line); }
+  .cert-name{ font-size:15.5px; }
+  .cert-org{ font-size:12.5px; color:var(--ink-faint); font-family:'IBM Plex Mono', monospace; }
+ 
+  /* publication */
+  .pub-card{
+    display:flex; flex-direction:column; gap:16px;
+    padding:32px 36px; border:1px solid var(--line); border-radius:14px;
+    border-left:2px solid var(--amber);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  .pub-card:hover {
+    background: rgba(255,255,255,0.01);
+    transform: translateX(4px);
+  }
+  .pub-title{ font-family:'Fraunces', serif; font-size:19px; font-style:italic; }
+  .pub-desc{ font-size:14.5px; color:var(--ink-dim); line-height:1.75; max-width:720px; }
+  .pub-meta{ display:flex; gap:20px; font-size:13px; color:var(--ink-dim); font-family:'IBM Plex Mono', monospace; flex-wrap:wrap; }
+  .pub-meta a{ color:var(--teal); }
+  .pub-meta a:hover{ text-decoration:underline; }
+ 
+  /* contact / footer */
+  footer{
+    position:relative; z-index:2; padding: 130px 8vw 60px; text-align:center;
+  }
+  .footer-lede { font-family:'Fraunces', serif; font-style:italic; font-weight:400; font-size:clamp(30px,4.4vw,54px); margin-bottom:34px; }
+  .contact-row{ display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin-bottom:70px; }
+  .contact-row a{
+    font-size:13px; letter-spacing:0.06em; padding:12px 22px; border-radius:999px;
+  }
+  .foot-bottom{ display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--ink-faint); border-top:1px solid var(--line); padding-top:24px; flex-wrap:wrap; gap:12px; }
+ 
+  .reveal{ opacity:0; transform:translateY(28px); }
+ 
+  @media (prefers-reduced-motion: reduce){
+    * { animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+ 
+<header>
+  <div class="wordmark">Nikhil Mahale</div>
+  <nav class="pill liquid-glass">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#publication">Publication</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <a class="resume-btn" href="Nikhil_Mahale_Resume_1.pdf" target="_blank" rel="noopener">Resume ↓</a>
+</header>
+ 
+<section class="hero" id="top">
+  <canvas id="graph"></canvas>
+  <div class="hero-vignette"></div>
+ 
+  <span class="eyebrow mono">Pune, India — Open to Data Science / Analyst Roles</span>
+  <h1 class="headline">Nikhil Mahale</h1>
+ 
+  <div class="hero-bottom">
+    <p class="hero-sub">
+      Computer Engineering student with hands-on experience in Python, SQL, data analysis, and machine learning through a data analyst internship and real-world projects. Skilled in exploratory data analysis, feature engineering, and building regression and classification models. Seeking a Data Scientist or Data Analyst role
+    </p>
+  </div>
+ 
+  <div class="scroll-cue mono">
+    <span class="mono">scroll</span>
+    <svg viewBox="0 0 24 24">
+      <path d="M7 10l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</section>
+ 
+<section id="about">
+  <div class="about-center">
+    <div class="about-meta reveal">
+      <div class="meta-row"><span class="k">Location</span><span class="v">Pune, Maharashtra, IN</span></div>
+      <div class="meta-row"><span class="k">College</span><span class="v">DY Patil College of Engineering, Pune (SPPU)</span></div>
+      <div class="meta-row"><span class="k">Degree</span><span class="v">B.E. Computer Engineering · 2023–2027</span></div>
+      <div class="meta-row"><span class="k">CGPA</span><span class="v">7.62 / 10</span></div>
+      <div class="meta-row"><span class="k">Email</span><span class="v"><a href="mailto:nikhilmahale456@gmail.com">nikhilmahale456@gmail.com</a></span></div>
+      <div class="meta-row"><span class="k">Phone</span><span class="v"><a href="tel:+918446482704">+91‑8446482704</a></span></div>
+      <div class="meta-row"><span class="k">LinkedIn</span><span class="v"><a href="https://linkedin.com/in/nikhil-mahale-293987271" target="_blank" rel="noopener">/nikhil-mahale-293987271</a></span></div>
+      <div class="meta-row"><span class="k">GitHub</span><span class="v"><a href="https://github.com/nikhilhere7" target="_blank" rel="noopener">/nikhilhere7</a></span></div>
+    </div>
+  </div>
+</section>
+
+ 
+<section id="experience">
+  <div class="section-head reveal">
+    <span class="section-num mono">01 — EXPERIENCE</span>
+    <div class="section-title">Where I've put it to work</div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-date">NOV 2025 — JAN 2026</div>
+      <div>
+        <div class="tl-role">Data Analysis Intern</div>
+        <div class="tl-org mono">UptoSkills</div>
+        <ul>
+          <li>Performed data mining, cleaning, and exploratory analysis on company recruitment datasets to extract actionable hiring insights.</li>
+          <li>Built interactive Power BI dashboards and recurring reports to help stakeholders monitor recruitment metrics and hiring trends.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-date">OCT 2023 — AUG 2025</div>
+      <div>
+        <div class="tl-role">Co‑Founder &amp; Operations Manager</div>
+        <div class="tl-org mono">Veechimonk — E‑Commerce</div>
+        <ul>
+          <li>Co‑founded and operated an e‑commerce clothing brand, managing 45+ products across sourcing, vendors, and fulfillment.</li>
+          <li>Built automated Excel / Power BI dashboards to track sales, inventory, and customer trends.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section id="projects">
+  <div class="section-head reveal">
+    <span class="section-num mono">02 — PROJECTS</span>
+    <div class="section-title">Featured Projects</div>
+  </div>
+  <div class="proj-stack reveal">
+ 
+    <div class="proj-card">
+      <div>
+        <div class="proj-head-row">
+          <span class="proj-eyebrow">Full-Stack AI Product</span>
+          <div class="proj-links">
+            <a href="https://github.com/nikhilhere7/LostMoney-AI" target="_blank" rel="noopener">Code ↗</a>
+            <a href="https://lostmoneyai.netlify.app" target="_blank" rel="noopener">Live demo ↗</a>
+          </div>
+        </div>
+        <div class="proj-title">LostMoney.AI</div>
+        <div class="proj-subtitle">AI-powered personal finance tracker for India</div>
+        <div class="proj-desc">Upload a bank statement (PDF, CSV, or Excel) and get instant categorized spending, recurring-subscription detection, and savings suggestions — built end to end as a production app, not a notebook.</div>
+        <div class="proj-tags">
+          <span class="proj-tag">React + Vite</span>
+          <span class="proj-tag">Django REST Framework</span>
+          <span class="proj-tag">PostgreSQL</span>
+          <span class="proj-tag">Celery + Redis</span>
+          <span class="proj-tag">Scikit-learn</span>
+          <span class="proj-tag">Netlify</span>
+          <span class="proj-tag">Railway</span>
+        </div>
+        <div class="proj-stat">95%+ ML categorization accuracy on Indian bank transactions</div>
+      </div>
+      <div class="proj-visual">
+        <svg viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="82" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="14"/>
+          <circle class="interactive-circle" cx="100" cy="100" r="82" fill="none" stroke="#3EB6A2" stroke-width="14"
+                  stroke-linecap="round" stroke-dasharray="515.2" stroke-dashoffset="25.76"
+                  transform="rotate(-90 100 100)"/>
+          <text x="100" y="94" text-anchor="middle" font-family="Fraunces, serif" font-size="34" fill="#F3F1EA">95%</text>
+          <text x="100" y="120" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1" fill="rgba(243,241,234,0.5)">CATEGORIZATION ACC.</text>
+        </svg>
+      </div>
+    </div>
+ 
+    <div class="proj-card">
+      <div>
+        <div class="proj-head-row">
+          <span class="proj-eyebrow">Regression / Model Evaluation</span>
+          <div class="proj-links">
+            <a href="https://github.com/nikhilhere7/Expenses-Income-Prediction" target="_blank" rel="noopener">Code ↗</a>
+          </div>
+        </div>
+        <div class="proj-title">Income &amp; Expense Prediction</div>
+        <div class="proj-subtitle">Predicting customer cash flow from 12,000+ ANZ bank transactions</div>
+        <div class="proj-desc">Engineered behavioral features from raw transaction logs and trained Linear Regression and Random Forest models to predict monthly income and expenses per customer — then reported honestly on where the approach worked and where it didn't.</div>
+        <div class="proj-tags">
+          <span class="proj-tag">Python</span>
+          <span class="proj-tag">Pandas</span>
+          <span class="proj-tag">Scikit-learn</span>
+          <span class="proj-tag">Matplotlib</span>
+          <span class="proj-tag">Seaborn</span>
+        </div>
+        <div class="proj-stat">Expense model: R² 0.65 — Income model: R² −2.54</div>
+      </div>
+      <div class="proj-visual">
+        <svg viewBox="0 0 260 170">
+          <line x1="20" y1="20" x2="20" y2="140" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <line x1="20" y1="80" x2="240" y2="80" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <text x="10" y="145" font-family="IBM Plex Mono, monospace" font-size="9" fill="rgba(243,241,234,0.4)">-3</text>
+          <text x="60" y="145" font-family="IBM Plex Mono, monospace" font-size="9" fill="rgba(243,241,234,0.4)">-2</text>
+          <text x="105" y="145" font-family="IBM Plex Mono, monospace" font-size="9" fill="rgba(243,241,234,0.4)">-1</text>
+          <text x="155" y="145" font-family="IBM Plex Mono, monospace" font-size="9" fill="rgba(243,241,234,0.4)">0</text>
+          <text x="200" y="145" font-family="IBM Plex Mono, monospace" font-size="9" fill="rgba(243,241,234,0.4)">1</text>
+          <rect class="interactive-bar" x="155" y="42" width="42" height="20" rx="3" fill="#3EB6A2"/>
+          <text x="150" y="56" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="#F3F1EA">0.65</text>
+          <text x="200" y="56" font-family="Inter, sans-serif" font-size="10" fill="rgba(243,241,234,0.55)">Expense model</text>
+          <rect class="interactive-bar alt" x="52" y="94" width="103" height="20" rx="3" fill="#E8A33D"/>
+          <text x="160" y="108" font-family="IBM Plex Mono, monospace" font-size="10" fill="#F3F1EA">−2.54</text>
+          <text x="52" y="128" font-family="Inter, sans-serif" font-size="10" fill="rgba(243,241,234,0.55)">Income model</text>
+        </svg>
+      </div>
+    </div>
+ 
+    <div class="proj-card">
+      <div>
+        <div class="proj-head-row">
+          <span class="proj-eyebrow">Exploratory Data Analysis</span>
+          <div class="proj-links">
+            <a href="https://github.com/nikhilhere7/telecom-churn-analysis" target="_blank" rel="noopener">Code ↗</a>
+          </div>
+        </div>
+        <div class="proj-title">Telecom Customer Churn Analysis</div>
+        <div class="proj-subtitle">Diagnosing a 26% churn rate across 7,000+ customer records</div>
+        <div class="proj-desc">Full exploratory analysis of TELE.COM's customer base to find who churns and why, translated into five prioritized, owner-assigned retention recommendations for leadership.</div>
+        <div class="proj-tags">
+          <span class="proj-tag">Python</span>
+          <span class="proj-tag">Pandas</span>
+          <span class="proj-tag">EDA</span>
+          <span class="proj-tag">Seaborn</span>
+          <span class="proj-tag">Feature Engineering</span>
+        </div>
+        <div class="proj-stat">Month-to-month customers churn ~3x more than long-term contracts</div>
+      </div>
+      <div class="proj-visual">
+        <svg viewBox="0 0 260 170">
+          <line x1="20" y1="20" x2="20" y2="140" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <line x1="20" y1="140" x2="240" y2="140" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <rect class="interactive-bar alt" x="40" y="128" width="30" height="12" rx="2" fill="#3EB6A2"/>
+          <text x="35" y="156" font-family="Inter, sans-serif" font-size="9" fill="rgba(243,241,234,0.55)">Two-year</text>
+          <rect class="interactive-bar alt" x="110" y="110" width="30" height="30" rx="2" fill="#3EB6A2"/>
+          <text x="103" y="156" font-family="Inter, sans-serif" font-size="9" fill="rgba(243,241,234,0.55)">One-year</text>
+          <rect class="interactive-bar" x="180" y="55" width="30" height="85" rx="2" fill="#E8A33D"/>
+          <text x="152" y="156" font-family="Inter, sans-serif" font-size="9" fill="rgba(243,241,234,0.55)">Month-to-month</text>
+          <text x="182" y="48" font-family="IBM Plex Mono, monospace" font-size="10" fill="#F3F1EA">~3x</text>
+        </svg>
+      </div>
+    </div>
+ 
+  </div>
+</section>
+ 
+<section id="skills">
+  <div class="section-head reveal">
+    <span class="section-num mono">03 — SKILLS</span>
+    <div class="section-title">The toolkit</div>
+  </div>
+  <div class="skills-grid reveal">
+    <div class="skill-group">
+      <div class="skill-cat">Languages</div>
+      <div class="skill-list"><span>Python</span><span>SQL</span><span>C++</span></div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-cat">Machine Learning</div>
+      <div class="skill-list"><span>Pandas</span><span>NumPy</span><span>Scikit‑learn</span><span>Regression</span><span>Classification</span><span>EDA</span></div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-cat">Visualization</div>
+      <div class="skill-list"><span>Matplotlib</span><span>Seaborn</span><span>Power BI</span><span>Excel</span></div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-cat">Tools</div>
+      <div class="skill-list"><span>PostgreSQL</span><span>Git &amp; GitHub</span><span>Jupyter</span><span>VS Code</span></div>
+    </div>
+  </div>
+</section>
+ 
+<section id="certs">
+  <div class="section-head reveal">
+    <span class="section-num mono">04 — CERTIFICATIONS</span>
+  </div>
+  <div class="cert-list reveal">
+    <div class="cert-item">
+      <span class="cert-name">Databases and SQL for Data Science with Python</span>
+      <span class="cert-org">IBM / COURSERA, 2025</span>
+    </div>
+    <div class="cert-item">
+      <span class="cert-name">Foundations: Data, Data, Everywhere</span>
+      <span class="cert-org">GOOGLE / COURSERA, 2024</span>
+    </div>
+    <div class="cert-item">
+      <span class="cert-name">Ask Questions to Make Data‑Driven Decisions</span>
+      <span class="cert-org">GOOGLE / COURSERA, 2024</span>
+    </div>
+  </div>
+</section>
+ 
+<section id="publication">
+  <div class="section-head reveal">
+    <span class="section-num mono">05 — PUBLICATION</span>
+    <div class="section-title">Publication</div>
+  </div>
+  <div class="pub-card reveal">
+    <div class="pub-title">Supervised and Unsupervised Analysis</div>
+    <div class="pub-desc">This study applies supervised and unsupervised machine learning to large-scale pharmaceutical drug reviews to predict patient satisfaction and discover common themes in real-world medication experiences. Models like Naïve Bayes, SVM, and Random Forest were used for classification, with Random Forest performing best. Unsupervised methods such as K-Means and LDA revealed key topics including side effects, benefits, mood changes, and daily-life impact. The work highlights how NLP and ML can convert unstructured patient feedback into actionable healthcare insights.</div>
+    <div class="pub-meta">
+      <span>Zenodo, 2025</span>
+      <a href="https://doi.org/10.5281/zenodo.17702138" target="_blank" rel="noopener">DOI: 10.5281/zenodo.17702138 ↗</a>
+      <a href="Supervised_and_Unsupervised_Analysis.pdf" target="_blank" rel="noopener">View Full Paper (PDF) ↓</a>
+    </div>
+  </div>
+</section>
+ 
+<footer id="contact">
+  <div class="footer-lede reveal">Let's talk data.</div>
+  <div class="contact-row reveal">
+    <a class="liquid-glass" href="mailto:nikhilmahale456@gmail.com">nikhilmahale456@gmail.com</a>
+    <a class="liquid-glass" href="tel:+918446482704">+91‑8446482704</a>
+    <a class="liquid-glass" href="https://linkedin.com/in/nikhil-mahale-293987271" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="liquid-glass" href="https://github.com/nikhilhere7" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Nikhil Prakash Mahale</span>
+    <span class="mono">Pune, Maharashtra, IN</span>
+  </div>
+</footer>
+ 
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+ 
+  // ---- entrance animation ----
+  gsap.timeline({defaults:{ease:"power2.out"}})
+    .to(".eyebrow", { opacity:1, y:0, duration:0.8 })
+    .to(".headline", { opacity:1, y:0, duration:1 }, "-=0.5")
+    .to(".hero-bottom", { opacity:1, y:0, duration:1 }, "-=0.6");
+ 
+  // ---- scroll reveals ----
+  document.querySelectorAll(".reveal").forEach((el) => {
+    gsap.to(el, {
+      opacity:1, y:0, duration:0.9, ease:"power2.out",
+      scrollTrigger:{ trigger: el, start:"top 85%" }
+    });
+  });
+ 
+  // ---- data constellation canvas ----
+  const canvas = document.getElementById('graph');
+  const ctx = canvas.getContext('2d');
+  let W, H, points = [];
+  const POINT_COUNT = 70;
+  const LINK_DIST = 130;
+ 
+  function resize(){
+    W = canvas.width = canvas.offsetWidth * devicePixelRatio;
+    H = canvas.height = canvas.offsetHeight * devicePixelRatio;
+    canvas.style.width = "100%"; canvas.style.height = "100%";
+  }
+  window.addEventListener('resize', resize);
+  resize();
+ 
+  for(let i=0;i<POINT_COUNT;i++){
+    points.push({
+      x: Math.random()*W, y: Math.random()*H,
+      vx: (Math.random()-0.5)*0.25*devicePixelRatio,
+      vy: (Math.random()-0.5)*0.25*devicePixelRatio,
+      r: Math.random()*1.6 + 0.6
+    });
+  }
+ 
+  let targetX = 0, targetY = 0, curX = 0, curY = 0;
+  document.addEventListener('mousemove', (e) => {
+    const cx = window.innerWidth/2, cy = window.innerHeight/2;
+    targetX = ((e.clientX - cx)/cx) * 18;
+    targetY = ((e.clientY - cy)/cy) * 18;
+  });
+ 
+  function draw(){
+    curX += (targetX - curX) * 0.05;
+    curY += (targetY - curY) * 0.05;
+ 
+    ctx.clearRect(0,0,W,H);
+    ctx.save();
+    ctx.translate(curX*devicePixelRatio, curY*devicePixelRatio);
+ 
+    for(const p of points){
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < 0 || p.x > W) p.vx *= -1;
+      if(p.y < 0 || p.y > H) p.vy *= -1;
+    }
+ 
+    for(let i=0;i<points.length;i++){
+      for(let j=i+1;j<points.length;j++){
+        const a = points[i], b = points[j];
+        const dx = a.x-b.x, dy = a.y-b.y;
+        const dist = Math.sqrt(dx*dx+dy*dy);
+        const maxDist = LINK_DIST*devicePixelRatio;
+        if(dist < maxDist){
+          ctx.strokeStyle = `rgba(232,163,61,${(1-dist/maxDist)*0.18})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    for(const p of points){
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r*devicePixelRatio,0,Math.PI*2);
+      ctx.fillStyle = "rgba(62,182,162,0.55)";
+      ctx.fill();
+    }
+    ctx.restore();
+    requestAnimationFrame(draw);
+  }
+  draw();
+</script>
+ 
+</body>
+</html>
+ 
+
